@@ -9,26 +9,48 @@ import constants from 'src/config/constants';
 
 export class UserCreateDto {
 
-    @ApiProperty()
+    @ApiProperty({
+      description:'Name default data perfil',
+      example: 'Jonata'
+    })
     @Length(constants.STRING_MIN, constants.STRING_MAX)
     @IsString()
-    name: String;
+    name: string;
 
-    @ApiProperty()
+    @ApiProperty({
+      description:'Email default login',
+      example: 'jonata@gmail.com'
+    })
     @Length(constants.STRING_MIN, constants.STRING_MAX)
     @IsString()
-    email: String;
+    email: string;
 
-    @ApiProperty()
+    @ApiProperty({
+      description:'Phone default user',
+      example: '(35)9.9743-3853'
+    })
     @Length(constants.NUMBER_MIN_PHONE)
     @IsString()
-    phone_user: String;
+    phone_user: string;
     
-    @ApiProperty()
+    @ApiProperty({
+      description:'Data born',
+      example: '2022-08-13T16:05:29.000Z'
+    })
     @IsString()
-    dateborn: String;
+    dateborn: string;
+    string
+    @ApiProperty({
+      description:'Type gender',
+      example: 'male'
+    })
+    @IsString()
+    radiogender: string;
 
-    @ApiProperty()
-    @IsString()
-    radiogender: String;
+    @ApiProperty({
+      description:'Id Company user',
+      example: '1e4cce9e-82bb-4f7c-81ff-4d0fd1bda312'
+    })
+    @IsNotEmpty()
+    company_id_user: string;
 }

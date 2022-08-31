@@ -9,9 +9,9 @@ export class UserService {
   constructor(private prisma: PrismaService) { }
 
   async create(userDto: UserCreateDto) {
-    // const user = await this.prisma.user.create({ data: userDto });
+    const user = await this.prisma.user.create({ data: userDto });
 
-    // return user;
+    return user;
   }
 
   findAll() {
@@ -22,11 +22,32 @@ export class UserService {
     return `This action returns a #${id} module`;
   }
 
-  update(id: number, updateModuleDto: UpdateModuleDto) {
-    return `This action updates a #${id} module`;
+  async update(id: string, data: UpdateModuleDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    }) 
+
+    if (!user) {
+      throw new Error(`User ${id} does not exist`);
+    }
+
+    return await this.prisma.user.update({
+      data,
+      where: { id },
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} module`;
+  async remove(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    }) 
+
+    if (!user) {
+      throw new Error(`User does not exist`);
+    }
+
+    return await this.prisma.user.delete({
+      where: { id },
+    });
   }
 }

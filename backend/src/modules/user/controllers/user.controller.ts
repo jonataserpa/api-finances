@@ -46,11 +46,11 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto) {
-    return this.moduleService.update(+id, updateModuleDto);
+    return this.moduleService.update(id, updateModuleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.moduleService.remove(+id);
+    return this.moduleService.remove(id);
   }
 }
