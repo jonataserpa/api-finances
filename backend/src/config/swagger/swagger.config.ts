@@ -18,7 +18,7 @@ export function buildSwagger(app: INestApplication) {
     .setTitle(process.env.SWAGGER_TITLE)
     .setDescription(process.env.SWAGGER_DESCRIPTION)
     .setVersion(process.env.SWAGGER_VERSION)
-    .addTag('user')
+    // .addTag('user')
     // .addBearerAuth({ in: 'header', type: bearerAuthType })
     // .addServer(process.env.SWAGGER_SERVER)
     .build();

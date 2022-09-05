@@ -40,16 +40,34 @@ export class UserController {
   }
 
   @Get(':id')
+  @AccessControl(accessProfileConstants.PERMISSIONS.LIST_USER)
+  @ApiOperation({ summary: 'Get an user' })
+  @ApiOkResponse({ description: 'Get user', type: UserCreateDto })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   findOne(@Param('id') id: string) {
     return this.moduleService.findOne(+id);
   }
 
   @Patch(':id')
+  @AccessControl(accessProfileConstants.PERMISSIONS.EDIT_USER)
+  @ApiOperation({ summary: 'Edit an user' })
+  @ApiOkResponse({
+    description: 'User updated successfully',
+    type: UserCreateDto,
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto) {
     return this.moduleService.update(id, updateModuleDto);
   }
 
   @Delete(':id')
+  @AccessControl(accessProfileConstants.PERMISSIONS.REMOVE_USER)
+  @ApiOperation({ summary: 'Delete an user' })
+  @ApiOkResponse({ description: 'User deleted successfully', type: UserCreateDto })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   remove(@Param('id') id: string) {
     return this.moduleService.remove(id);
   }

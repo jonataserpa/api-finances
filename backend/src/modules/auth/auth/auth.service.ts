@@ -1,6 +1,8 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { firstValueFrom } from 'rxjs';
 
 const users = [
   {
@@ -25,19 +27,36 @@ const users = [
 //bcrypt
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  // constructor(private jwtService: JwtService) {}
+  constructor(private http: HttpService) {}
 
-  login(username: string, password: string) {
-    const user = this.validateCredentials(username, password);
-
-    const payload = {
-      sub: user.id,
-      username: user.username,
-      role: user.role,
-    };
-
-    return this.jwtService.sign(payload);
+  async login(username: string, password: string) {
+    const { data } = await firstValueFrom(
+      this.http.post(
+        'http://localhost:8083/auth/realms/App_finances/protocol/openid-connect/token',
+        new URLSearchParams({
+          client_id: 'app_nestjs_finances',
+          client_secret: 'cc7d8e5e-2ad0-4578-8397-38a5b641fcca',
+          grant_type: 'password',
+          username,
+          password,
+        }),
+      ),
+    );
+    return data;
   }
+
+  // login(username: string, password: string) {
+  //   const user = this.validateCredentials(username, password);
+
+  //   const payload = {
+  //     sub: user.id,
+  //     username: user.username,
+  //     role: user.role,
+  //   };
+
+  //   return this.jwtService.sign(payload);
+  // }
 
   validateCredentials(username: string, password: string) {
     const user = users.find(
