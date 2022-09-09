@@ -46,7 +46,7 @@ export class UserController {
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   findOne(@Param('id') id: string) {
-    return this.moduleService.findOne(+id);
+    return this.moduleService.findOne(id);
   }
 
   @Patch(':id')

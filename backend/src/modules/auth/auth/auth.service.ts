@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+// import * as bcrypt from 'bcrypt';
 import { firstValueFrom } from 'rxjs';
 
 const users = [
@@ -31,12 +31,13 @@ export class AuthService {
   constructor(private http: HttpService) {}
 
   async login(username: string, password: string) {
+    // const data = this.validateCredentials(username, password);
     const { data } = await firstValueFrom(
       this.http.post(
-        'http://localhost:8083/auth/realms/App_finances/protocol/openid-connect/token',
+        'http://host.docker.internal:8083/auth/realms/App_finances/protocol/openid-connect/token',
         new URLSearchParams({
           client_id: 'app_nestjs_finances',
-          client_secret: 'cc7d8e5e-2ad0-4578-8397-38a5b641fcca',
+          client_secret: 'f0f47399-0493-433e-8a69-8d71e89b570f',
           grant_type: 'password',
           username,
           password,
@@ -58,17 +59,17 @@ export class AuthService {
   //   return this.jwtService.sign(payload);
   // }
 
-  validateCredentials(username: string, password: string) {
-    const user = users.find(
-      (u) =>
-        u.username === username && bcrypt.compareSync(password, u.password),
-    );
+  // validateCredentials(username: string, password: string) {
+  //   const user = users.find(
+  //     (u) =>
+  //       u.username === username && bcrypt.compareSync(password, u.password),
+  //   );
 
-    if (!user) {
-      throw new Error('User not found');
-    }
+  //   if (!user) {
+  //     throw new Error('User not found');
+  //   }
 
-    return user;
-  }
+  //   return user;
+  // }
 }
 //auth0 - jsonwebtoken

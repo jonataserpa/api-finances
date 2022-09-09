@@ -6,6 +6,7 @@ import {
     Length,
   } from 'class-validator';
 import constants from 'src/config/constants';
+import { UserAddressDto } from './userAddress.dto';
 
 export class UserCreateDto {
 
@@ -53,4 +54,7 @@ export class UserCreateDto {
     })
     @IsNotEmpty()
     company_id_user: string;
+
+    @IsOptional()
+    address: UserAddressDto[];
 }

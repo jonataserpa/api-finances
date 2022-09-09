@@ -1,10 +1,9 @@
 {
-  "name": "live-nest-auth",
+  "name": "api-finances",
   "version": "0.0.1",
-  "description": "",
+  "description": "API Finances",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -13,12 +12,15 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "eslint": "eslint \"{src,apps,libs,test}/**/**/*.ts\"",
+    "eslint:fix": "eslint \"{src,apps,libs,test}/**/**/*.ts\" --fix",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate": "npx prisma migrate dev"
   },
   "dependencies": {
     "@nestjs/axios": "^0.1.0",
@@ -32,7 +34,6 @@
     "@nestjs/swagger": "^5.0.9",
     "@prisma/client": "^4.2.1",
     "base64url": "^3.0.1",
-    "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "helmet": "^4.6.0",
@@ -41,7 +42,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "swagger-ui-express": "^4.5.0"
+    "swagger-ui-express": "^4.5.0",
+    "mysql2": "^2.3.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
@@ -66,7 +68,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.7.4"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -84,5 +86,10 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": []
 }
