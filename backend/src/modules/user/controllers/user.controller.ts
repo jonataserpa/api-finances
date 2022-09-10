@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import accessProfileConstants from 'src/config/constants/accessProfile.constants';
 import { AccessControl } from 'src/utils/decorators/accessControl.decorator';
 import { UserCreateDto } from '../dto/userCreate.dto';
 import { UpdateModuleDto } from '../dto/userUpdate.dto';
-import { UserService } from '../services/module.service';
+import { UserService } from '../services/user.service';
 
 @ApiTags('user')
 @Controller('user')
@@ -35,8 +35,8 @@ export class UserController {
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  findAll() {
-    return this.moduleService.findAll();
+  findAll(@Query('skip') skip: string, @Query('take') take: string, @Query('filter') filter: string) {
+    return this.moduleService.findAll({skip: Number(skip), take: Number(take), filter: filter });
   }
 
   @Get(':id')

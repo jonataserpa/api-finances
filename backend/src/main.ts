@@ -12,7 +12,8 @@ async function bootstrap() {
   app.use(helmet());
   app.setGlobalPrefix(process.env.API_PREFIX);
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-
+  app.enableCors();
+  
   buildSwagger(app);
 
   await app.listen(process.env.API_PORT || 3000);

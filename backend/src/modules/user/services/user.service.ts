@@ -1,43 +1,76 @@
 import { Injectable } from '@nestjs/common';
+import { filter } from 'rxjs';
 import { PrismaService } from 'src/config/database/PrismaService';
 import { UserCreateDto } from '../dto/userCreate.dto';
 import { UpdateModuleDto } from '../dto/userUpdate.dto';
 
 @Injectable()
 export class UserService {
-
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(userDto: UserCreateDto) {
-    const user = await this.prisma.user.create({ 
+    const user = await this.prisma.user.create({
       data: {
         name: userDto.name,
         dateborn: userDto.dateborn,
         email: userDto.email,
         phone_user: userDto.phone_user,
-        radiogender: userDto.radiogender, 
+        radiogender: userDto.radiogender,
         company_id_user: userDto.company_id_user,
-        address:{
-          createMany: { 
-            data: userDto.address         
-          }
-        }
+        address: {
+          createMany: {
+            data: userDto.address,
+          },
+        },
       },
     });
 
     return user;
   }
 
-  findAll() {
-    return this.prisma.user.findMany({
-      include: {
-        address: {
-          include: {
-            trail: false
-          }
-        }
-      }
-    });
+  async findAll(params: { skip?: number; take?: number; filter?: string; }) {
+    const { skip, take, filter } = params;
+    let data;
+
+    if (isNaN(skip)) {
+      data = await this.prisma.user.findMany({
+        include: {
+          address: {
+            include: {
+              trail: false,
+            },
+          },
+        },
+      });
+    } else {
+      data = await this.prisma.user.findMany({
+        skip,
+        take,
+        where: {
+          name: {
+            contains: filter,
+          },
+        },
+        orderBy: {
+          id: 'desc',
+        },
+        include: {
+          address: {
+            include: {
+              trail: false,
+            },
+          },
+        },
+      });
+    }
+
+    const totalCount = await this.prisma.user.findMany();
+
+    const dataUsers = {
+      data,
+      headers: totalCount.length -1,
+    };
+    return dataUsers;
   }
 
   findOne(id: string) {
@@ -45,9 +78,9 @@ export class UserService {
       include: {
         address: {
           include: {
-            trail: false
-          }
-        }
+            trail: false,
+          },
+        },
       },
       where: { id },
     });
@@ -56,7 +89,7 @@ export class UserService {
   async update(id: string, userDto: UpdateModuleDto) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-    }) 
+    });
 
     if (!user) {
       throw new Error(`User ${id} does not exist`);
@@ -68,22 +101,22 @@ export class UserService {
         dateborn: userDto.dateborn,
         email: userDto.email,
         phone_user: userDto.phone_user,
-        radiogender: userDto.radiogender, 
+        radiogender: userDto.radiogender,
         company_id_user: userDto.company_id_user,
-        address:{
-          createMany: { 
-            data: userDto.address         
-          }
-        }
+        address: {
+          createMany: {
+            data: userDto.address,
+          },
+        },
       },
       where: { id },
-    })
+    });
   }
 
   async remove(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-    }) 
+    });
 
     if (!user) {
       throw new Error(`User does not exist`);
