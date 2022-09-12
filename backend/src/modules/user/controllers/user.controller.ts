@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import accessProfileConstants from 'src/config/constants/accessProfile.constants';
 import { AccessControl } from 'src/utils/decorators/accessControl.decorator';
@@ -49,7 +49,7 @@ export class UserController {
     return this.moduleService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @AccessControl(accessProfileConstants.PERMISSIONS.EDIT_USER)
   @ApiOperation({ summary: 'Edit an user' })
   @ApiOkResponse({

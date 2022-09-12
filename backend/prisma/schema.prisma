@@ -27,7 +27,7 @@ model User {
 }
 
 model Company {
-  id            String @id @default(uuid())
+  id            String @id @default(dbgenerated())
   reasonsocial  String
   namefantasy   String
   CNPJ          String

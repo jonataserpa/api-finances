@@ -28,7 +28,7 @@ export class UserService {
     return user;
   }
 
-  async findAll(params: { skip?: number; take?: number; filter?: string; }) {
+  async findAll(params: { skip?: number; take?: number; filter?: string }) {
     const { skip, take, filter } = params;
     let data;
 
@@ -68,7 +68,7 @@ export class UserService {
 
     const dataUsers = {
       data,
-      headers: totalCount.length -1,
+      headers: totalCount.length - 1,
     };
     return dataUsers;
   }
@@ -95,7 +95,7 @@ export class UserService {
       throw new Error(`User ${id} does not exist`);
     }
 
-    return await this.prisma.user.update({
+    const updateUser = await this.prisma.user.update({
       data: {
         name: userDto.name,
         dateborn: userDto.dateborn,
@@ -103,14 +103,27 @@ export class UserService {
         phone_user: userDto.phone_user,
         radiogender: userDto.radiogender,
         company_id_user: userDto.company_id_user,
-        address: {
-          createMany: {
-            data: userDto.address,
-          },
-        },
       },
       where: { id },
     });
+
+    this.prisma.$transaction(
+      userDto.address.map((adr) =>
+        this.prisma.address.upsert({
+          where: { id: adr.id },
+          update: { 
+            adrees: adr.adrees,
+            cep: adr.cep,
+            city: adr.city,
+            number_end: adr.number_end,
+            state: adr.state,
+          },
+          create: adr,
+        }),
+      ),
+    );
+
+    return updateUser;
   }
 
   async remove(id: string) {
