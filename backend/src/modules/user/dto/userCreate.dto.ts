@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import constants from 'src/config/constants';
 import { UserAddressDto } from './userAddress.dto';
 
 export class UserCreateDto {
   @ApiProperty()
-  @IsString()
-  id: string;
+  id: number;
 
   @ApiProperty({
     description: 'Name default data perfil',
@@ -30,7 +29,7 @@ export class UserCreateDto {
   })
   @Length(constants.NUMBER_MIN_PHONE)
   @IsString()
-  phone_user: string;
+  phone: string;
 
   @ApiProperty({
     description: 'Data born',
@@ -50,8 +49,9 @@ export class UserCreateDto {
     description: 'Id Company user',
     example: '1e4cce9e-82bb-4f7c-81ff-4d0fd1bda312',
   })
+  @IsInt()
   @IsNotEmpty()
-  company_id_user: string;
+  companyId: number;
 
   @IsOptional()
   address: UserAddressDto[];

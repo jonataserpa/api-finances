@@ -2,36 +2,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String @id @default(uuid())
-  name            String
-  email           String
-  phone_user      String
-  company_id_user String
-  dateborn        String
-  radiogender     String
+  id          Int    @id @default(autoincrement())
+  name        String
+  email       String
+  phone       String
+  companyId   Int
+  dateborn    String
+  radiogender String
 
   createAt DateTime  @default(now())
   updateAt DateTime  @updatedAt
   deleteAt DateTime?
   address  Address[]
-  Company  Company?  @relation(fields: [company_id_user], references: [id])
+  Company  Company   @relation(fields: [companyId], references: [id])
 
   @@index([name])
   @@map("users")
 }
 
 model Company {
-  id            String @id @default(dbgenerated())
-  reasonsocial  String
-  namefantasy   String
-  CNPJ          String
-  phone_company String
+  id           Int    @id @default(autoincrement())
+  reasonsocial String
+  namefantasy  String
+  CNPJ         String
+  phone        String
 
   createAt DateTime  @default(now())
   updateAt DateTime  @updatedAt
@@ -44,14 +48,14 @@ model Company {
 }
 
 model Address {
-  id                 String  @id @default(uuid())
+  id                 String @id @default(uuid())
   cep                String
   adrees             String
   number_end         String
   state              String
   city               String
-  user_id            String?
-  company_id_address String?
+  user_id            Int?
+  company_id_address Int?
 
   trail   User?    @relation(fields: [user_id], references: [id])
   company Company? @relation(fields: [company_id_address], references: [id])
@@ -64,7 +68,7 @@ model Address {
 }
 
 model Payment {
-  id           String        @id @default(uuid())
+  id           Int           @id @default(autoincrement())
   description  String
   companyId    String
   value        String

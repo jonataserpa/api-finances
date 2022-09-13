@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateCompanyDto } from '../dto/create-company.dto';
@@ -58,11 +59,11 @@ export class CompanyController {
   @ApiOkResponse({ description: 'Get company', type: CreateCompanyDto })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.companyService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @ApiOperation({ summary: 'Edit an company' })
   @ApiOkResponse({
     description: 'Company updated successfully',
@@ -70,7 +71,7 @@ export class CompanyController {
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  update(@Param('id') id: string, @Body() UpdateCompanyDto: UpdateCompanyDto) {
+  update(@Param('id') id: number, @Body() UpdateCompanyDto: UpdateCompanyDto) {
     return this.companyService.update(id, UpdateCompanyDto);
   }
 
@@ -82,7 +83,7 @@ export class CompanyController {
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.companyService.remove(id);
   }
 }

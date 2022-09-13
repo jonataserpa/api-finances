@@ -13,7 +13,7 @@ export class CompanyService {
         reasonsocial: companyDto.reasonsocial,
         namefantasy: companyDto.namefantasy,
         CNPJ: companyDto.CNPJ,
-        phone_company: companyDto.phone_company,
+        phone: companyDto.phone,
         address: {
           createMany: {
             data: companyDto.address,
@@ -25,7 +25,7 @@ export class CompanyService {
     return user;
   }
 
-  async findAll(params: { skip?: number; take?: number; filter?: string; }) {
+  async findAll(params: { skip?: number; take?: number; filter?: string }) {
     const { skip, take, filter } = params;
     let data;
 
@@ -65,12 +65,12 @@ export class CompanyService {
 
     const dataCompanys = {
       data,
-      headers: totalCount.length -1,
+      headers: totalCount.length === 1 ? 1 : totalCount.length - 1,
     };
     return dataCompanys;
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return this.prisma.user.findUnique({
       include: {
         address: {
@@ -83,7 +83,7 @@ export class CompanyService {
     });
   }
 
-  async update(id: string, companyDto: UpdateCompanyDto) {
+  async update(id: number, companyDto: UpdateCompanyDto) {
     const company = await this.prisma.company.findUnique({
       where: { id },
     });
@@ -92,23 +92,36 @@ export class CompanyService {
       throw new Error(`company ${id} does not exist`);
     }
 
-    return await this.prisma.company.update({
+    const updateCompany = await this.prisma.company.update({
       data: {
         reasonsocial: companyDto.reasonsocial,
         namefantasy: companyDto.namefantasy,
         CNPJ: companyDto.CNPJ,
-        phone_company: companyDto.phone_company,
-        address: {
-          createMany: {
-            data: companyDto.address,
-          },
-        },
+        phone: companyDto.phone,
       },
       where: { id },
     });
+
+    this.prisma.$transaction(
+      companyDto.address.map((adr) =>
+        this.prisma.address.upsert({
+          where: { id: adr.id },
+          update: {
+            adrees: adr.adrees,
+            cep: adr.cep,
+            city: adr.city,
+            number_end: adr.number_end,
+            state: adr.state,
+          },
+          create: adr,
+        }),
+      ),
+    );
+
+    return updateCompany;
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     const company = await this.prisma.company.findUnique({
       where: { id },
     });

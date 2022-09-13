@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { filter } from 'rxjs';
 import { PrismaService } from 'src/config/database/PrismaService';
 import { UserCreateDto } from '../dto/userCreate.dto';
 import { UpdateModuleDto } from '../dto/userUpdate.dto';
@@ -14,9 +13,9 @@ export class UserService {
         name: userDto.name,
         dateborn: userDto.dateborn,
         email: userDto.email,
-        phone_user: userDto.phone_user,
+        phone: userDto.phone,
         radiogender: userDto.radiogender,
-        company_id_user: userDto.company_id_user,
+        companyId: userDto.companyId,
         address: {
           createMany: {
             data: userDto.address,
@@ -68,12 +67,12 @@ export class UserService {
 
     const dataUsers = {
       data,
-      headers: totalCount.length - 1,
+      headers: totalCount.length === 1 ? 1 : totalCount.length -1,
     };
     return dataUsers;
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return this.prisma.user.findUnique({
       include: {
         address: {
@@ -86,7 +85,7 @@ export class UserService {
     });
   }
 
-  async update(id: string, userDto: UpdateModuleDto) {
+  async update(id: number, userDto: UpdateModuleDto) {
     const user = await this.prisma.user.findUnique({
       where: { id },
     });
@@ -100,9 +99,9 @@ export class UserService {
         name: userDto.name,
         dateborn: userDto.dateborn,
         email: userDto.email,
-        phone_user: userDto.phone_user,
+        phone: userDto.phone,
         radiogender: userDto.radiogender,
-        company_id_user: userDto.company_id_user,
+        companyId: userDto.companyId,
       },
       where: { id },
     });
@@ -126,7 +125,7 @@ export class UserService {
     return updateUser;
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     const user = await this.prisma.user.findUnique({
       where: { id },
     });

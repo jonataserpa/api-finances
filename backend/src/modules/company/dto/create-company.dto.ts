@@ -34,7 +34,7 @@ export class CreateCompanyDto {
   })
   @Length(constants.NUMBER_MIN_PHONE)
   @IsString()
-  phone_company: string;
+  phone: string;
 
   @IsOptional()
   address: UserAddressDto[];

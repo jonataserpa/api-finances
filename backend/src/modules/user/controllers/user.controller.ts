@@ -45,7 +45,7 @@ export class UserController {
   @ApiOkResponse({ description: 'Get user', type: UserCreateDto })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.moduleService.findOne(id);
   }
 
@@ -58,7 +58,7 @@ export class UserController {
   })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  update(@Param('id') id: string, @Body() updateModuleDto: UpdateModuleDto) {
+  update(@Param('id') id: number, @Body() updateModuleDto: UpdateModuleDto) {
     return this.moduleService.update(id, updateModuleDto);
   }
 
@@ -68,7 +68,7 @@ export class UserController {
   @ApiOkResponse({ description: 'User deleted successfully', type: UserCreateDto })
   @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.moduleService.remove(id);
   }
 }

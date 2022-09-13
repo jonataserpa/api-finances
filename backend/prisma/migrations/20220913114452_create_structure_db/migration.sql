@@ -1,10 +1,10 @@
 -- CreateTable
 CREATE TABLE `users` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `phone_user` VARCHAR(191) NOT NULL,
-    `company_id_user` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
+    `companyId` INTEGER NOT NULL,
     `dateborn` VARCHAR(191) NOT NULL,
     `radiogender` VARCHAR(191) NOT NULL,
     `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -17,11 +17,11 @@ CREATE TABLE `users` (
 
 -- CreateTable
 CREATE TABLE `companys` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `reasonsocial` VARCHAR(191) NOT NULL,
     `namefantasy` VARCHAR(191) NOT NULL,
     `CNPJ` VARCHAR(191) NOT NULL,
-    `phone_company` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updateAt` DATETIME(3) NOT NULL,
     `deleteAt` DATETIME(3) NULL,
@@ -38,8 +38,8 @@ CREATE TABLE `address` (
     `number_end` VARCHAR(191) NOT NULL,
     `state` VARCHAR(191) NOT NULL,
     `city` VARCHAR(191) NOT NULL,
-    `user_id` VARCHAR(191) NULL,
-    `company_id_address` VARCHAR(191) NULL,
+    `user_id` INTEGER NULL,
+    `company_id_address` INTEGER NULL,
     `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updateAt` DATETIME(3) NOT NULL,
     `deleteAt` DATETIME(3) NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `address` (
 
 -- CreateTable
 CREATE TABLE `payments` (
-    `id` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(191) NOT NULL,
     `companyId` VARCHAR(191) NOT NULL,
     `value` VARCHAR(191) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE `payments` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `users` ADD CONSTRAINT `users_company_id_user_fkey` FOREIGN KEY (`company_id_user`) REFERENCES `companys`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `users` ADD CONSTRAINT `users_companyId_fkey` FOREIGN KEY (`companyId`) REFERENCES `companys`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `address` ADD CONSTRAINT `address_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

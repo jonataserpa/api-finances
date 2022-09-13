@@ -1,14 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
 import constants from 'src/config/constants';
 import { UserAddressDto } from './userAddress.dto';
 import { UserCreateDto } from './userCreate.dto';
 
 export class UpdateModuleDto extends PartialType(UserCreateDto) {
   @ApiProperty()
-  @IsString()
-  id: string;
+  @IsInt()
+  id: number;
 
   @ApiProperty({
     description: 'Name default data perfil',
@@ -32,7 +32,7 @@ export class UpdateModuleDto extends PartialType(UserCreateDto) {
   })
   @Length(constants.NUMBER_MIN_PHONE)
   @IsString()
-  phone_user: string;
+  phone: string;
 
   @ApiProperty({
     description: 'Data born',
@@ -53,7 +53,8 @@ export class UpdateModuleDto extends PartialType(UserCreateDto) {
     example: '1e4cce9e-82bb-4f7c-81ff-4d0fd1bda312',
   })
   @IsNotEmpty()
-  company_id_user: string;
+  @IsInt()
+  companyId: number;
 
   @IsOptional()
   address: UserAddressDto[];
