@@ -85,6 +85,41 @@ model Payment {
   @@map("payments")
 }
 
+model Children {
+  id          String    @id @default(uuid())
+  name        String?
+  dateborn    DateTime?
+  namefather  String?
+  proprietary String?
+  observacion String?
+
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  deleteAt  DateTime?
+  cattlesId Int?
+
+  trail Cattles? @relation(fields: [cattlesId], references: [id])
+
+  @@map("childrens")
+}
+
+model Cattles {
+  id          Int        @id @default(autoincrement())
+  name        String
+  dateborn    DateTime?
+  namefather  String?
+  proprietary String?
+  observacion String?
+  children    Children[]
+
+  createAt DateTime  @default(now())
+  updateAt DateTime  @updatedAt
+  deleteAt DateTime?
+
+  @@index([name])
+  @@map("cattles")
+}
+
 enum PaymentStatus {
   PAYABLE
   PAIDOUT
