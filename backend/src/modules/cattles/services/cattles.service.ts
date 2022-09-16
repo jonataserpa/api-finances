@@ -17,7 +17,7 @@ export class CattlesService {
         observacion: cattlesDto.observacion,
         children: {
           createMany: {
-            data: cattlesDto.children,
+            data: cattlesDto?.children,
           },
         },
       },
@@ -114,6 +114,7 @@ export class CattlesService {
             namefather: cattle.namefather,
             proprietary: cattle.proprietary,
             observacion: cattle.observacion,
+            cattlesId: cattle.cattlesId,
           },
           create: cattle,
         }),

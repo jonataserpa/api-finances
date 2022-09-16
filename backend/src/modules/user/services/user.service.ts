@@ -18,7 +18,7 @@ export class UserService {
         companyId: userDto.companyId,
         address: {
           createMany: {
-            data: userDto.address,
+            data: userDto.address, 
           },
         },
       },
@@ -67,7 +67,7 @@ export class UserService {
 
     const dataUsers = {
       data,
-      headers: totalCount.length === 1 ? 1 : totalCount.length -1,
+      headers: totalCount.length === 1 ? 1 : totalCount.length - 1,
     };
     return dataUsers;
   }
@@ -101,23 +101,25 @@ export class UserService {
         email: userDto.email,
         phone: userDto.phone,
         radiogender: userDto.radiogender,
-        companyId: userDto.companyId,
+        companyId: userDto.companyId
       },
       where: { id },
     });
 
     this.prisma.$transaction(
-      userDto.address.map((adr) =>
-        this.prisma.address.upsert({
-          where: { id: adr.id },
-          update: { 
-            adrees: adr.adrees,
-            cep: adr.cep,
-            city: adr.city,
-            number_end: adr.number_end,
-            state: adr.state,
-          },
+      userDto.address?.map((adr) =>
+        this.prisma.address?.upsert({
           create: adr,
+          update: {
+            id: adr?.id,
+            adrees: adr?.adrees,
+            cep: adr?.cep,
+            city: adr?.city,
+            number_end: adr?.number_end,
+            state: adr?.state,
+            user_id: adr?.user_id,
+          },
+          where: { id: adr?.id },
         }),
       ),
     );

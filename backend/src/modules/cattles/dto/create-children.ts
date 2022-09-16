@@ -5,6 +5,7 @@ import constants from "src/config/constants";
 export class CreateChildrenDto {
   @ApiProperty()
   @IsString()
+  @IsOptional()
   id: string;
 
   @ApiProperty({
@@ -49,4 +50,7 @@ export class CreateChildrenDto {
   @IsString()
   @IsOptional()
   observacion: string;
+
+  @IsOptional()
+  cattlesId: number;
 }

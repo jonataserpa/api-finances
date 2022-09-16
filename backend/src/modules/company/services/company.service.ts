@@ -112,6 +112,7 @@ export class CompanyService {
             city: adr.city,
             number_end: adr.number_end,
             state: adr.state,
+            company_id_address: adr.company_id_address,
           },
           create: adr,
         }),
