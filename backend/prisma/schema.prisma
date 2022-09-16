@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 datasource db {
   provider = "mysql"
@@ -42,6 +42,7 @@ model Company {
   deleteAt DateTime?
   address  Address[]
   User     User[]
+  Payment  Payment[]
 
   @@index([reasonsocial])
   @@map("companys")
@@ -68,20 +69,22 @@ model Address {
 }
 
 model Payment {
-  id           Int           @id @default(autoincrement())
-  description  String
-  companyId    String
-  value        String
-  observacion  String
-  date_payment DateTime
-  datedue      DateTime
-  typepayment  String
-  status       PaymentStatus @default(PAYABLE)
+  id          Int           @id @default(autoincrement())
+  description String
+  companyId   Int
+  value       String?
+  observacion String?
+  datedue     DateTime?
+  typepayment String?
+  status      PaymentStatus @default(PAYABLE)
+
+  Company Company @relation(fields: [companyId], references: [id])
 
   createAt DateTime  @default(now())
   updateAt DateTime  @updatedAt
   deleteAt DateTime?
 
+  @@index([description])
   @@map("payments")
 }
 

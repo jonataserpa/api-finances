@@ -51,17 +51,49 @@ CREATE TABLE `address` (
 CREATE TABLE `payments` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `description` VARCHAR(191) NOT NULL,
-    `companyId` VARCHAR(191) NOT NULL,
-    `value` VARCHAR(191) NOT NULL,
-    `observacion` VARCHAR(191) NOT NULL,
-    `date_payment` DATETIME(3) NOT NULL,
-    `datedue` DATETIME(3) NOT NULL,
-    `typepayment` VARCHAR(191) NOT NULL,
+    `companyId` INTEGER NOT NULL,
+    `value` VARCHAR(191) NULL,
+    `observacion` VARCHAR(191) NULL,
+    `datedue` DATETIME(3) NULL,
+    `typepayment` VARCHAR(191) NULL,
     `status` ENUM('PAYABLE', 'PAIDOUT', 'RECEIVABLE', 'RECEIVED') NOT NULL DEFAULT 'PAYABLE',
     `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updateAt` DATETIME(3) NOT NULL,
     `deleteAt` DATETIME(3) NULL,
 
+    INDEX `payments_description_idx`(`description`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `childrens` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NULL,
+    `dateborn` DATETIME(3) NULL,
+    `namefather` VARCHAR(191) NULL,
+    `proprietary` VARCHAR(191) NULL,
+    `observacion` VARCHAR(191) NULL,
+    `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+    `deleteAt` DATETIME(3) NULL,
+    `cattlesId` INTEGER NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `cattles` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `dateborn` DATETIME(3) NULL,
+    `namefather` VARCHAR(191) NULL,
+    `proprietary` VARCHAR(191) NULL,
+    `observacion` VARCHAR(191) NULL,
+    `createAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updateAt` DATETIME(3) NOT NULL,
+    `deleteAt` DATETIME(3) NULL,
+
+    INDEX `cattles_name_idx`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -73,3 +105,9 @@ ALTER TABLE `address` ADD CONSTRAINT `address_user_id_fkey` FOREIGN KEY (`user_i
 
 -- AddForeignKey
 ALTER TABLE `address` ADD CONSTRAINT `address_company_id_address_fkey` FOREIGN KEY (`company_id_address`) REFERENCES `companys`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `payments` ADD CONSTRAINT `payments_companyId_fkey` FOREIGN KEY (`companyId`) REFERENCES `companys`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `childrens` ADD CONSTRAINT `childrens_cattlesId_fkey` FOREIGN KEY (`cattlesId`) REFERENCES `cattles`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

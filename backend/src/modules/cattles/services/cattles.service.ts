@@ -72,9 +72,9 @@ export class CattlesService {
   }
 
   findOne(id: number) {
-    return this.prisma.user.findUnique({
+    return this.prisma.cattles.findUnique({
       include: {
-        address: {
+        children: {
           include: {
             trail: false,
           },
